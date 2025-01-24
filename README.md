@@ -1,4 +1,4 @@
-Hi my Name is Pasha and I am a Data Analyst pursuing my masters in Business Analytics at Georgetown
+Hi my name is Pasha and I am a Data Analyst pursuing my masters in Business Analytics at Georgetown
 
 Below is samples of my work that I have completed as my contribution to the data analyst space. 
 
