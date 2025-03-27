@@ -1,6 +1,8 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
+import sklearn
+print(sklearn.__version__)
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LogisticRegression
 
@@ -77,4 +79,5 @@ if st.button("Predict"):
     })
     probability = model.predict_proba(individual)[0, 1]  # Fix indexing error
     st.write(f"Probability of LinkedIn usage for age {age}: {probability:.2f}")
+
 
