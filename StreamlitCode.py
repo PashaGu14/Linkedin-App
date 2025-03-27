@@ -1,8 +1,7 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
-import sklearn
-print(sklearn.__version__)
+import os
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LogisticRegression
 
@@ -13,13 +12,18 @@ def clean_binary_column(column, positive_value):
 # Streamlit app title
 st.title("LinkedIn Usage Prediction")
 
-# Load data
-try:
+# File upload section
+uploaded_file = st.file_uploader("Upload your dataset (CSV format)", type=["csv"])
+
+if uploaded_file:
+    data = pd.read_csv(uploaded_file)
+    st.success("File uploaded successfully!")
+elif os.path.exists("social_media_usage.csv"):
     data = pd.read_csv("social_media_usage.csv")
     st.success("Data loaded successfully!")
-except FileNotFoundError:
-    st.error("The file 'social_media_usage.csv' was not found. Please upload it.")
-    st.stop()  # Stops execution if file is missing
+else:
+    st.error("No data file provided. Please upload 'social_media_usage.csv'.")
+    st.stop()  # Stops execution if no data is provided
 
 # Ensure required columns exist
 required_columns = {'web1h', 'income', 'educ2', 'par', 'marital', 'gender', 'age'}
@@ -28,13 +32,14 @@ if not required_columns.issubset(data.columns):
     st.stop()
 
 # Data processing
-data['sm_li'] = clean_binary_column(data['web1h'], 1)  # LinkedIn usage
-data['income'] = data['income'].apply(lambda x: x if 1 <= x <= 9 else np.nan)  # Valid income range
-data['education'] = data['educ2'].apply(lambda x: x if 1 <= x <= 8 else np.nan)  # Valid education range
-data['parent'] = clean_binary_column(data['par'], 1)  # Parent status
-data['married'] = clean_binary_column(data['marital'], 1)  # Marital status
-data['female'] = clean_binary_column(data['gender'], 2)  # Female gender
-data['age'] = data['age'].apply(lambda x: x if 0 <= x < 98 else np.nan)  # Valid age range
+data = data.copy()  # Avoid modifying original data
+data.loc[:, 'sm_li'] = clean_binary_column(data['web1h'], 1)  # LinkedIn usage
+data.loc[:, 'income'] = data['income'].apply(lambda x: x if 1 <= x <= 9 else np.nan)  # Valid income range
+data.loc[:, 'education'] = data['educ2'].apply(lambda x: x if 1 <= x <= 8 else np.nan)  # Valid education range
+data.loc[:, 'parent'] = clean_binary_column(data['par'], 1)  # Parent status
+data.loc[:, 'married'] = clean_binary_column(data['marital'], 1)  # Marital status
+data.loc[:, 'female'] = clean_binary_column(data['gender'], 2)  # Female gender
+data.loc[:, 'age'] = data['age'].apply(lambda x: x if 0 <= x < 98 else np.nan)  # Valid age range
 
 # Filter dataset and drop rows with missing values
 features = ['sm_li', 'income', 'education', 'parent', 'married', 'female', 'age']
@@ -77,7 +82,8 @@ if st.button("Predict"):
         'female': [female],
         'age': [age]
     })
-    probability = model.predict_proba(individual)[0, 1]  # Fix indexing error
-    st.write(f"Probability of LinkedIn usage for age {age}: {probability:.2f}")
-
-
+    try:
+        probability = model.predict_proba(individual)[0, 1]  # Fix indexing error
+        st.write(f"Probability of LinkedIn usage for age {age}: {probability:.2f}")
+    except Exception as e:
+        st.error(f"An error occurred during prediction: {e}")
