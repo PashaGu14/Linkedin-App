@@ -1,9 +1,26 @@
-Hi my name is Pasha and I am a Data Analyst pursuing my masters in Business Analytics at Georgetown
+# LinkedIn Engagement Analytics App
+## Overview
 
-Below is samples of my work that I have completed as my contribution to the data analyst space. 
+The LinkedIn Engagement Analytics App is a Streamlit-based tool designed to help professionals and content creators understand and optimize their LinkedIn presence. By analyzing historical post-level engagement data, the app provides actionable insights on what types of content drive the highest interaction rates.
+Users can explore interactive visualizations of likes, comments, shares, and post reach, identify top-performing content themes, and track performance trends over time. This structured analysis enables smarter content strategies and repeatable engagement improvements.
 
-# Linkedin-App
-Linkedin app created to predict user engagement based on historical data and other features relevant. Using python methodology the app makes predictions on user activity helping business professionals understand app engagement patterns.  
-## Portfolio
+### Features:
 
-- [LinkedIn Streamlit App](https://all-the-pasha-bilities.streamlit.app): An interactive web application to showcase LinkedIn features.
+* Clean and transform LinkedIn post-level engagement data
+
+* Interactive visualizations of likes, comments, shares, and engagement rates
+
+* Identification of top-performing content themes
+
+* Trend analysis for repeatable performance tracking
+
+* Run the app here (https://all-the-pasha-bilities.streamlit.app): An interactive web application to showcase LinkedIn features.
+
+### Users can input demographic details such as:
+
+* Household income
+* Education level
+* Parental status
+* Marital status
+* Gender
+* Age
